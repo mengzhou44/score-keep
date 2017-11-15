@@ -1,33 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import FlipMove from 'react-flip-move';
 import Players from '../api/players';
 
 export default class PlayerList extends Component {
   renderPlayer(player) {
     return (
       <div key={player._id} className="item">
-        <p>
-          {player.name} has {player.score} point(s).{' '}
-        </p>
-        <button
-          className="button button--round"
-          onClick={() => Players.update({ _id: player._id }, { $inc: { score: 1 } })}
-        >
-          +
-        </button>
-        <button
-          className="button button--round"
-          onClick={() => Players.update({ _id: player._id }, { $inc: { score: -1 } })}
-        >
-          -
-        </button>
-        <button
-          className="button button--round"
-          onClick={() => Players.remove({ _id: player._id })}
-        >
-          {' '}
-          X{' '}
-        </button>
+        <div className="player">
+          <div>
+            <h3 className="player__name"> {player.name} </h3>
+            <p className="player__stats">{player.score} point(s).</p>
+          </div>
+          <div className="player__actions">
+            <button
+              className="button button--round"
+              onClick={() => Players.update({ _id: player._id }, { $inc: { score: 1 } })}
+            >
+              +
+            </button>
+            <button
+              className="button button--round"
+              onClick={() => Players.update({ _id: player._id }, { $inc: { score: -1 } })}
+            >
+              -
+            </button>
+            <button
+              className="button button--round"
+              onClick={() => Players.remove({ _id: player._id })}
+            >
+              {' '}
+              X{' '}
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -39,6 +45,10 @@ export default class PlayerList extends Component {
         </div>
       );
     }
-    return <div className="wrapper">{this.props.players.map(this.renderPlayer)}</div>;
+    return (
+      <div className="wrapper">
+        <FlipMove maintainContainerHeight>{this.props.players.map(this.renderPlayer)}</FlipMove>
+      </div>
+    );
   }
 }
